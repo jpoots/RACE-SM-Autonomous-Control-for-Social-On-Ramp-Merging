@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-01-19 17:32:01 by Eclipse SUMO netedit Version 1.15.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="C:\Users\AdminL\Desktop\TraCI\19 SPARSE REWARDS\learning_net.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="C:\Users\AdminL\Desktop\TraCI\19 SPARSE REWARDS\learning_net.net.xml"/>
+    </output>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="0"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.50"/>
+        <rectangular-lane-cut value="0"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="0"/>
+    </pedestrian>
+
+</configuration>
+-->
+
+<net version="1.9" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="0.00,-70.70,400.00,0.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
+
+    <edge id=":center_0" function="internal">
+        <lane id=":center_0_0" index="0" speed="6.17" length="3.21" shape="143.09,-9.18 143.77,-8.53 144.34,-8.18 144.99,-8.03 145.93,-8.00"/>
+    </edge>
+    <edge id=":center_1" function="internal">
+        <lane id=":center_1_0" index="0" speed="26.00" length="3.33" shape="142.60,-4.80 145.93,-4.80"/>
+        <lane id=":center_1_1" index="1" speed="26.00" length="3.33" shape="142.60,-1.60 145.93,-1.60"/>
+    </edge>
+    <edge id=":merge_0" function="internal">
+        <lane id=":merge_0_0" index="0" speed="26.00" length="8.27" shape="246.00,-8.00 248.46,-7.50 250.00,-6.40 251.54,-5.30 254.00,-4.80"/>
+        <lane id=":merge_0_1" index="1" speed="26.00" length="8.27" shape="246.00,-4.80 254.00,-4.80"/>
+        <lane id=":merge_0_2" index="2" speed="26.00" length="8.27" shape="246.00,-1.60 254.00,-1.60"/>
+    </edge>
+
+    <edge id="incoming" from="left" to="center" priority="-1">
+        <lane id="incoming_0" index="0" speed="26.00" length="142.60" shape="0.00,-4.80 142.60,-4.80"/>
+        <lane id="incoming_1" index="1" speed="26.00" length="142.60" shape="0.00,-1.60 142.60,-1.60"/>
+    </edge>
+    <edge id="merging" from="center" to="merge" priority="-1">
+        <lane id="merging_0" index="0" speed="26.00" length="100.07" acceleration="1" shape="145.93,-8.00 246.00,-8.00"/>
+        <lane id="merging_1" index="1" speed="26.00" length="100.07" shape="145.93,-4.80 246.00,-4.80"/>
+        <lane id="merging_2" index="2" speed="26.00" length="100.07" shape="145.93,-1.60 246.00,-1.60"/>
+    </edge>
+    <edge id="on-ramp" from="merge_inflow" to="center" priority="-1" length="75.00">
+        <lane id="on-ramp_0" index="0" speed="26.00" length="75.00" shape="80.43,-71.83 143.09,-9.18"/>
+    </edge>
+    <edge id="outgoing" from="merge" to="end" priority="-1">
+        <lane id="outgoing_0" index="0" speed="26.00" length="146.00" shape="254.00,-4.80 400.00,-4.80"/>
+        <lane id="outgoing_1" index="1" speed="26.00" length="146.00" shape="254.00,-1.60 400.00,-1.60"/>
+    </edge>
+
+    <junction id="center" type="priority" x="150.00" y="0.00" incLanes="on-ramp_0 incoming_0 incoming_1" intLanes=":center_0_0 :center_1_0 :center_1_1" shape="145.93,0.00 145.93,-9.60 145.29,-9.68 145.00,-9.78 144.72,-9.91 144.46,-10.09 144.22,-10.31 141.96,-8.04 142.76,-7.13 142.94,-6.81 142.97,-6.58 142.86,-6.45 142.60,-6.40 142.60,0.00" radius="1.00">
+        <request index="0" response="000" foes="000" cont="0"/>
+        <request index="1" response="000" foes="000" cont="0"/>
+        <request index="2" response="000" foes="000" cont="0"/>
+    </junction>
+    <junction id="end" type="dead_end" x="400.00" y="0.00" incLanes="outgoing_0 outgoing_1" intLanes="" shape="400.00,-6.40 400.00,0.00"/>
+    <junction id="left" type="dead_end" x="0.00" y="0.00" incLanes="" intLanes="" shape="0.00,0.00 0.00,-6.40"/>
+    <junction id="merge" type="zipper" x="250.00" y="0.00" incLanes="merging_0 merging_1 merging_2" intLanes=":merge_0_0 :merge_0_1 :merge_0_2" shape="254.00,0.00 254.00,-6.40 250.97,-7.23 249.03,-8.77 247.79,-9.36 246.00,-9.60 246.00,0.00">
+        <request index="0" response="010" foes="010" cont="0"/>
+        <request index="1" response="001" foes="001" cont="0"/>
+        <request index="2" response="000" foes="000" cont="0"/>
+    </junction>
+    <junction id="merge_inflow" type="dead_end" x="79.30" y="-70.70" incLanes="" intLanes="" shape="79.30,-70.70 81.56,-72.96"/>
+
+    <connection from="incoming" to="merging" fromLane="0" toLane="1" via=":center_1_0" dir="s" state="M"/>
+    <connection from="incoming" to="merging" fromLane="1" toLane="2" via=":center_1_1" dir="s" state="M"/>
+    <connection from="merging" to="outgoing" fromLane="0" toLane="0" via=":merge_0_0" dir="s" state="Z"/>
+    <connection from="merging" to="outgoing" fromLane="1" toLane="0" via=":merge_0_1" dir="s" state="Z"/>
+    <connection from="merging" to="outgoing" fromLane="2" toLane="1" keepClear="0" via=":merge_0_2" dir="s" state="M"/>
+    <connection from="on-ramp" to="merging" fromLane="0" toLane="0" via=":center_0_0" dir="r" state="M"/>
+
+    <connection from=":center_0" to="merging" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":center_1" to="merging" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":center_1" to="merging" fromLane="1" toLane="2" dir="s" state="M"/>
+    <connection from=":merge_0" to="outgoing" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":merge_0" to="outgoing" fromLane="1" toLane="0" dir="s" state="M"/>
+    <connection from=":merge_0" to="outgoing" fromLane="2" toLane="1" dir="s" state="M"/>
+
+</net>
