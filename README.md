@@ -11,12 +11,10 @@ A box state space is being used. The state space consists of gaps between vehicl
 
 The gaps between the ego vehicle and vehicles immediately leading and trailing it in the right highway lane are included, along with their speeds. In addition to this, the gap between the leading vehicle in the right lane and its leading vehicle are also recorded, along with this vehicle’s speed. The gap between the following vehicle in the right lane and its following vehicle are included along with this vehicles speed.
 
-In addition, the state space includes the ego vehicle’s speed, its x-distance to the merging point, the number of lanes in the section of road the ego vehicle is travelling on, the ego vehicle’s current lane and the velocity of a directly adjacent vehicle if applicable.
+In addition, the state space includes the ego vehicle’s speed, its x-distance to the merging point, the number of lanes in the section of road the ego vehicle is travelling on, the ego vehicle’s current lane, the ego vehicle's lateral position relative to the centre of the lane and the velocity of a directly adjacent vehicle if applicable.
 
 #### Actions
 A discrete action space is being used consisting of accelerations in the range +-3 m/s^2 in 0.5 m/s^2 increments along with a lane change option.
 
 #### Reward
-Generally, when the vehicle has not yet merged it receives no reward. Penalties for speeding and crashing are applied. Otherwise, it receives a reward based the concept of Social Value Orientation (SVO) from the field of social psychology. In this project, an SVO of 0 degrees indicates purely selfish behaviour and 90 degrees indicates purely altruistic behaviour. Sin(SVO) and Cos(SVO) are used as multipliers to adjust the value the ego vehicle places its own satisfaction and the satisfaction of the immediately surrounding vehicles.
-
-Ego vehicle satisfaction is defined by its speed and surrounding vehicle satisfaction is defined by their distance from the ego vehicle.
+Generally, when the vehicle has not yet merged it receives no reward. A penalty for crashing is applied. Otherwise, it receives a reward based the concept of Social Value Orientation (SVO) from the field of social psychology. In this project, an SVO of 0 degrees indicates purely selfish behaviour and 90 degrees indicates purely altruistic behaviour. Sin(SVO) and Cos(SVO) are used as multipliers to adjust the value the ego vehicle places its own satisfaction and the satisfaction of the immediately surrounding vehicles.
