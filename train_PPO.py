@@ -1,19 +1,20 @@
 import os
 import pathlib
-from stable_baselines3 import DQN
-from stable_baselines3.common.vec_env import SubprocVecEnv
+from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import SubprocVecEnv, DummyVecEnv
 from env import SumoEnv
+from eval_env import SumoEnv as EvalEnv
 from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback, CallbackList
 from stable_baselines3.common.monitor import Monitor
 
 def main():
 
     # input variables
-    num_envs = 8
-    timesteps = 20000000
-    eval_freq = 50000
-    iteration = 20
-    algo = "DQN"
+    num_envs = 20
+    timesteps = 40000000
+    eval_freq = 100000
+    iteration = 66
+    algo = "PPO_UNCOOP_ENV_RERUN"
     gui = False
 
     # paths and eval adjusting for multiple envs
@@ -25,11 +26,11 @@ def main():
     best_save_path = os.path.join(final_save_path, "Best Model")
     eval_freq_adjusted = eval_freq/num_envs
 
-    # setup envs
-    env = SubprocVecEnv([lambda: Monitor(SumoEnv(gui=gui))  for i in range(num_envs)], start_method="spawn")
-    eval_env = SubprocVecEnv([lambda: Monitor(SumoEnv(gui=gui))])
+    # setup env
+    env = SubprocVecEnv([lambda: Monitor(SumoEnv(gui=gui), info_keywords=("is_success",))  for i in range(num_envs)], start_method="spawn")
+    eval_env = SubprocVecEnv([lambda: Monitor(EvalEnv(gui=gui), info_keywords=("is_success",))])
 
-    # Callback to save checkpoints
+    # Callback to evaluate model every 5000 steps and save best
     checkpoint_callback = CheckpointCallback(
         save_path=checkpoint_save_path,
         name_prefix= "rl_model",
@@ -37,12 +38,14 @@ def main():
         verbose = 1
     )
 
-    # Callback to evaluate model and save best
+    # Callback to evaluate model every 5000 steps and save best
     eval_callback = EvalCallback(
         eval_env,
+        n_eval_episodes= 50,
         best_model_save_path=best_save_path,
         eval_freq=eval_freq_adjusted, 
         render=False,
+        deterministic=True,
         verbose = 1
     )
 
@@ -50,7 +53,7 @@ def main():
     callback = CallbackList([checkpoint_callback, eval_callback])
 
     # create, train, save model
-    model = DQN("MlpPolicy", env, verbose=1, tensorboard_log=log_path, device="cuda")
+    model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=log_path, device="cuda")
     model.learn(total_timesteps=timesteps, callback=callback)
 
     print("Training complete. Saving model.")

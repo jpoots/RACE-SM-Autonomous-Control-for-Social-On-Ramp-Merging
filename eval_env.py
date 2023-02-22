@@ -54,7 +54,7 @@ class SumoEnv(Env):
         else:
             self.sumoBinary = r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo.exe"
 
-        self.path = os.path.join(pathlib.Path(__file__).parent.resolve(), "training_sim.sumocfg")
+        self.path = os.path.join(pathlib.Path(__file__).parent.resolve(), "eval_sim.sumocfg")
 
         # sumo start cmd. Sets step length, checks only real collisions
         self.sumoCmd = [self.sumoBinary, "-c", self.path, "--step-length", f"{self.step_length}", "--collision.check-junctions", "--lateral-resolution", "1.6", "--collision.mingap-factor", "0", "--random"]

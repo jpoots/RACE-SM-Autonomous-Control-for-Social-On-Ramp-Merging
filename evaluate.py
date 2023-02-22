@@ -1,8 +1,8 @@
 import numpy as np
 import os, sys
-from stable_baselines3 import DQN
-from stable_baselines3.common.vec_env import DummyVecEnv
-from env import SumoEnv
+from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
+from eval_env import SumoEnv
 from stable_baselines3.common.monitor import Monitor
 
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -10,26 +10,20 @@ import pathlib
 
 def main():
     gui = True
-    eval_timesteps = 3000
-
     # defining model path
-    result_name = ""
-    save_path = os.path.join(pathlib.Path(__file__).parent.resolve(), "Models", result_name, result_name, "Best Model", "best_model")
+    result_name = "66_PPO_UNCOOP_ENV_40000000"
+    save_path = os.path.join(pathlib.Path(__file__).parent.resolve(), "Models", result_name, f"rl_model_20000000_steps.zip")
 
-    model = DQN.load(save_path)
-    env = DummyVecEnv([lambda: SumoEnv(gui=gui)])
+    model = PPO.load(save_path)
+    env = SubprocVecEnv([lambda: SumoEnv(gui=gui)])
     reward = 0
     obs = env.reset()
     time = 0
 
-    # run evaluation
-    for _ in range(eval_timesteps):
-        action, _ = model.predict(obs)
+    for _ in range(10000000):
+        action, _ = model.predict(obs, deterministic=True)
         obs, rewards, done, info = env.step(action)
-        time += 0.1
-        reward += rewards
     
-    # print the total reward
     print('the final reward is {}'.format(reward))
     
 # run code on script run
