@@ -6,14 +6,14 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <!-- VTypes -->
     <vType id="no_co-op" lcCooperative="-1" lcPushyGap="0" carFollowModel="IDM"/>
-    <vType id="rl" maxSpeed="26.00" color="red" latAlignment="center" accel="3" decel="3"/>
+    <vType id="rl" color="red" latAlignment="center" accel="3" decel="3"/>
     <!-- Routes -->
     <route id="r_0" edges="on-ramp merging outgoing"/>
     <route id="r_1" edges="incoming merging outgoing"/>
     <!-- Vehicles, persons and containers (sorted by depart) -->
-    <flow id="f_0" type="no_co-op" begin="0.00" departLane="1" departSpeed="22.00" route="r_1" end="3600.00" probability="0.10"/>
-    <flow id="f_1" type="no_co-op" begin="0.00" departLane="0" departSpeed="22.00" route="r_1" end="3600.00" probability="0.15"/>
-    <flow id="uncoop" type="no_co-op" begin="0.00" departLane="0" departSpeed="22.00" route="r_1" end="3600.00" probability="0.15">
+    <flow id="f_0" type="no_co-op" begin="0.00" departLane="1" departSpeed="26.00" route="r_1" end="3600.00" probability="0.10"/>
+    <flow id="f_1" type="no_co-op" begin="0.00" departLane="0" departSpeed="26.00" route="r_1" end="3600.00" probability="0.15"/>
+    <flow id="uncoop" type="no_co-op" begin="0.00" departLane="0" departSpeed="26.00" route="r_1" end="3600.00" probability="0.15">
         <param key="junctionModel.ignoreTypes" value="rl"/>
     </flow>
 </routes>

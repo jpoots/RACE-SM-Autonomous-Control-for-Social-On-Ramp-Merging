@@ -13,8 +13,8 @@ def main():
     num_envs = 20
     timesteps = 40000000
     eval_freq = 100000
-    iteration = 66
-    algo = "PPO_UNCOOP_ENV_RERUN"
+    iteration = 91
+    algo = "PPO"
     gui = False
 
     # paths and eval adjusting for multiple envs

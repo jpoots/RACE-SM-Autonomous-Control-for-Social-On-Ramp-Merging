@@ -1,6 +1,6 @@
-# Autonomous Vehicle Trajectory Planning for On-Ramp Merging
+# RACE-SM: Reinforcement Learning Based Autonomous Control for Social On-Ramp Merging
 ## About
-This project is being worked on as a final year project for BEng Mechanical Engineering at Queen's University, Belfast. It seeks to use reinforcement learning to handle acceleration and lane change decision making for autonomous on-ramp merging. The .xml files are used to generate the road network in the SUMO simualtor. train.py is used to train a DQN agent in the OpenAI gym environment defined in env.py. The resultant model can be evaluated using evaluate.py. This project is under active development.
+This project seeks to use reinforcement learning to handle acceleration and lane change decision making for autonomous on-ramp merging. The .xml files are used to generate the road network in the SUMO simualtor. train_PPO.py is used to train a PPO agent in the OpenAI gym environment defined in env.py. The resultant model can be evaluated using evaluate.py.
 
 ### Environment
 #### Overview
@@ -17,4 +17,4 @@ In addition, the state space includes the ego vehicle’s speed, its x-distance 
 A discrete action space is being used consisting of accelerations in the range +-3 m/s^2 in 0.5 m/s^2 increments along with a lane change option.
 
 #### Reward
-Generally, when the vehicle has not yet merged it receives no reward. A penalty for crashing is applied. Otherwise, it receives a reward based the concept of Social Value Orientation (SVO) from the field of social psychology. In this project, an SVO of 0 degrees indicates purely selfish behaviour and 90 degrees indicates purely altruistic behaviour. Sin(SVO) and Cos(SVO) are used as multipliers to adjust the value the ego vehicle places its own satisfaction and the satisfaction of the immediately surrounding vehicles.
+Generally, when the vehicle has not yet merged it receives no reward. A penalty for crashing is applied. Otherwise, it receives a reward based the concept of Social Value Orientation (SVO) from the field of social psychology. In this project, an SVO of 0 degrees indicates purely selfish behaviour and 90 degrees indicates purely altruistic behaviour. Sin(SVO) and Cos(SVO) are used as multipliers to adjust the value the ego vehicle places its on utility to itself and to the immediately surrounding vehicles.

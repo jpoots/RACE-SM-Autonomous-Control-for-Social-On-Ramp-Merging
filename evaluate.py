@@ -11,15 +11,15 @@ import pathlib
 def main():
     gui = True
     # defining model path
-    result_name = "66_PPO_UNCOOP_ENV_40000000"
-    save_path = os.path.join(pathlib.Path(__file__).parent.resolve(), "Models", result_name, f"rl_model_20000000_steps.zip")
+    result_name = ""
+    timestep_mil = 14
+    save_path = os.path.join(pathlib.Path(__file__).parent.resolve(), "Models", result_name, f"rl_model_{int(timestep_mil * 10 ** 6)}_steps.zip")
 
     model = PPO.load(save_path)
     env = SubprocVecEnv([lambda: SumoEnv(gui=gui)])
     reward = 0
     obs = env.reset()
     time = 0
-
     for _ in range(10000000):
         action, _ = model.predict(obs, deterministic=True)
         obs, rewards, done, info = env.step(action)

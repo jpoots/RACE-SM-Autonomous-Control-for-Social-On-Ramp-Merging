@@ -69,6 +69,8 @@ class SumoEnv(Env):
         # apply the actions and move a step forward
         self.apply_action(action, self.rl_id)
         traci.simulationStep()
+        if ":merge" in traci.vehicle.getRoadID(self.rl_id):
+            traci.vehicle.changeSublane(self.rl_id, -traci.vehicle.getLateralLanePosition(self.rl_id))
 
         # check for collision, merge or timeout here
         if traci.simulation.getCollisions():
@@ -135,7 +137,7 @@ class SumoEnv(Env):
 
             self.network_length = sum(
                 traci.lane.getLength(lane) for lane in ["on-ramp_0", "incoming_0", "merging_0", "outgoing_0"]
-            )
+            ) - 100
 
         self.crash = False
         self.merged = False
@@ -165,7 +167,7 @@ class SumoEnv(Env):
             return observation
 
         ego_speed = traci.vehicle.getSpeed(rl_id)
-        merge_dist = (250 - traci.vehicle.getPosition(rl_id)[0])
+        merge_dist = (350 - traci.vehicle.getPosition(rl_id)[0])
         current_lane = traci.vehicle.getLaneIndex(rl_id)
         edge = traci.vehicle.getRoadID(rl_id)
         
@@ -208,7 +210,7 @@ class SumoEnv(Env):
         observation[total_observed * 2 + 5] = traci.vehicle.getLateralLanePosition(rl_id)/3.2
         
         self.state = observation
-
+  
         return self.state
 
 
@@ -224,22 +226,21 @@ class SumoEnv(Env):
             return 0
 
         # set default head and tailways 
-
         tailway = traci.vehicle.getPosition(rl_id)[0]
-        headway = (400 - traci.vehicle.getPosition(rl_id)[0])
+        headway = (500 - traci.vehicle.getPosition(rl_id)[0])
 
         leader_speed = ego_speed
         trailing_speed = ego_speed
 
-        normalising_gap = traci.lane.getLength("incoming_0") + traci.lane.getLength("merging_0") + traci.lane.getLength("outgoing_0")
+        normalising_gap = (traci.lane.getLength("incoming_0") + traci.lane.getLength("merging_0") + traci.lane.getLength("outgoing_0")) - 100
         normalising_dis_from_centre = normalising_gap/2
     
-        trailing = traci.vehicle.getFollower(rl_id)
+        trailing = traci.vehicle.getFollower(rl_id, 500)
         if trailing not in [None, ('',-1), ()]:
             tailway = trailing[1] + traci.vehicle.getMinGap(trailing[0])
             trailing_speed = traci.vehicle.getSpeed(trailing[0])
 
-        leading = traci.vehicle.getLeader(rl_id) 
+        leading = traci.vehicle.getLeader(rl_id, 500) 
         if leading not in [None, ('',-1), ()]:
             headway = leading[1] + traci.vehicle.getMinGap(rl_id)
             leader_speed = traci.vehicle.getSpeed(leading[0])
@@ -250,16 +251,15 @@ class SumoEnv(Env):
         leader_speed_dif = min(leader_speed - ego_speed, 0)
         trailing_speed_dif = min(ego_speed - trailing_speed, 0)
         
-        if headway > 20 and tailway > 20:
+        if headway > 40 and tailway > 40:
             dis_from_centre = 0
-            ego_speed = 1.3 * ego_speed
 
         # weights 
-        w1, w2, w3, w4 = 1/self.speed_limit, 8/normalising_gap, 10/normalising_dis_from_centre, 2.5/self.speed_limit
+        w1, w2, w3, w4, w5 = 0.5/self.speed_limit, 15/normalising_gap, 10/normalising_dis_from_centre, 12/self.speed_limit, 16/self.speed_limit
 
         # general form of usual reward function
         ego = w1 * ego_speed + w4 * leader_speed_dif
-        oth = w2 * gap - w3 * dis_from_centre + w4 * trailing_speed_dif
+        oth = w2 * gap - w3 * dis_from_centre + w5 * trailing_speed_dif
         svo = np.radians(45) # svo value in radians
 
         reward = ego * np.cos(svo) + oth * np.sin(svo)
@@ -292,7 +292,7 @@ class SumoEnv(Env):
 
             # if the vehicle being checked is not in the merging lane
             if merged == True or "f" in start_id:
-                trailing = traci.vehicle.getFollower(start_id)
+                trailing = traci.vehicle.getFollower(start_id, 500)
                 if trailing in [None, ('',-1), ()]:
                     break
                 else:
@@ -327,7 +327,7 @@ class SumoEnv(Env):
             min_gap = traci.vehicle.getMinGap(start_id)
             # if the vehicle being checked is not in the merging lane
             if merged == True or "f"  in start_id:
-                leading = traci.vehicle.getLeader(start_id)
+                leading = traci.vehicle.getLeader(start_id, 500)
                 if leading in [None, ('',-1), ()]:
                     break
                 else:
