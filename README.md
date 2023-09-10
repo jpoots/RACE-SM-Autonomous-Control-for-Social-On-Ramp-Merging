@@ -1,6 +1,6 @@
 # RACE-SM: Reinforcement Learning Based Autonomous Control for Social On-Ramp Merging
 ## About
-This project seeks to use reinforcement learning to handle acceleration and lane change decision making for autonomous on-ramp merging. The .xml files are used to generate the road network in the SUMO simualtor. train_PPO.py is used to train a PPO agent in the OpenAI gym environment defined in env.py. The resultant model can be tested using evaluate.py. Note that this code focusses on functionality above code efficiency. 
+This project seeks to use reinforcement learning to handle acceleration and lane change decision making for autonomous on-ramp merging. The .xml files are used to generate the road network in the SUMO simualtor. train_PPO.py is used to train a PPO agent in the OpenAI gym environment defined in env.py. The resultant model can be tested using evaluate.py. Note that this code focusses upon functionality above code efficiency. 
 
 ### Environment
 #### Overview
